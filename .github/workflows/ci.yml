@@ -13,4 +13,4 @@ jobs:
           elm-version: 0.19.1
 
       - name: Build
-        run: elm make src/test.elm
+        run: elm make src/Main.elm
