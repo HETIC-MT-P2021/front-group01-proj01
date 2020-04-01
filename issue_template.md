@@ -1,5 +1,3 @@
-[provide general introduction to the issue logging and why it is relevant to this repository]
-
 ## Context
 
 [provide more detailed introduction to the issue itself and why it is relevant]
