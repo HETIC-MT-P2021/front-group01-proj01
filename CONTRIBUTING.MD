@@ -51,4 +51,4 @@ The different types are:
 
 ## License
 
-Please refer to the **[license.md]()** file. 
+Please refer to the **[license.md](https://github.com/HETIC-MT-P2021/front-group01-projet01/blob/develop/LICENSE)** file. 
