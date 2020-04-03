@@ -1,0 +1,21 @@
+name: CI
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+jobs:
+  ci:
+    if: github.event.pull_request.merged
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup Elm
+        uses: jorelali/setup-elm@v1
+        with:
+          elm-version: 0.19.1
+
+      - name: Build
+        run: elm make src/Main.elm
