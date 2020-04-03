@@ -1,15 +1,9 @@
 version: "3.7"
 
 services:
-  nginx:
-    image: nginx:latest
-    ports: 
-      - "8000:8000"
-    restart: always
-
   elm:
     build:
       context: ./
       dockerfile: ./docker/build/elm/Dockerfile
-    volumes: 
-      - ./app/elm.js:/var/www/gallery/elm.js
+    ports: 
+      - "8000:80"

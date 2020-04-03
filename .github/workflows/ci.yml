@@ -18,4 +18,4 @@ jobs:
           elm-version: 0.19.1
 
       - name: Build
-        run: elm make src/Main.elm
+        run: elm make src/Main.elm --optimize --output=main.js

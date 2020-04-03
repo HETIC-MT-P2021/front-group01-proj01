@@ -4,10 +4,14 @@ RUN wget -O - 'https://github.com/elm/compiler/releases/download/0.19.1/binary-f
   | gunzip -c >/usr/local/bin/elm
 RUN chmod +x /usr/local/bin/elm
 
-WORKDIR /var/www/gallery
+WORKDIR /root/
 
-# RUN elm install
+COPY app/elm.json elm.json
+COPY app/src ./src
 
-COPY app/ /var/www/gallery/
+RUN elm make src/Main.elm --optimize --output build/main.js
 
-RUN elm make /var/www/gallery/src/Main.elm --optimize --output=elm.js
+FROM nginx:alpine
+
+COPY --from=builder /root/build/ /usr/share/nginx/html
+COPY app/index.html /usr/share/nginx/html
