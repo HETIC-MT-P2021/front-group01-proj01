@@ -20,17 +20,17 @@ init =
       }, Cmd.none )
 
 type Msg 
-  = HeaderMsg Header.Msg
-  | FooterMsg Footer.Msg
+    = HeaderMsg Header.Msg
+    | FooterMsg Footer.Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     HeaderMsg headerMsg ->
-      ( { model | header = Header.update headerMsg model.header }, Cmd.none )
+        ( { model | header = Header.update headerMsg model.header }, Cmd.none )
 
     FooterMsg footerMsg ->
-      ( { model | footer = Footer.update footerMsg model.footer }, Cmd.none )
+        ( { model | footer = Footer.update footerMsg model.footer }, Cmd.none )
 
 
 view : Model -> Html Msg

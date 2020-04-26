@@ -20,12 +20,12 @@ type alias Model =
     }
 
 type Msg 
-  = HeaderMsg Header.Msg
-  | FooterMsg Footer.Msg
+    = HeaderMsg Header.Msg
+    | FooterMsg Footer.Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
+    case msg of
     HeaderMsg headerMsg ->
       ( { model | header = Header.update headerMsg model.header }, Cmd.none )
 

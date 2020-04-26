@@ -16,38 +16,38 @@ import Route exposing (Route)
 -- MODEL
 
 type Page = 
-  HomePage Home.Model
-  | CategoriesPage Categories.Model
-  | ImagesPage Images.Model
-  | AboutPage About.Model
-  | NotFoundPage
+    HomePage Home.Model
+    | CategoriesPage Categories.Model
+    | ImagesPage Images.Model
+    | AboutPage About.Model
+    | NotFoundPage
 
 type alias Model =
-  { 
-  key : Nav.Key
-  , page : Page
-  , route : Route
-  }
+    { 
+    key : Nav.Key
+    , page : Page
+    , route : Route
+    }
 
 type Msg
-  = LinkClicked Browser.UrlRequest
-  | UrlChanged Url.Url
-  | HomePageMsg Home.Msg
-  | CategoriesPageMsg Categories.Msg
-  | ImagesPageMsg Images.Msg
-  | AboutPageMsg About.Msg
+    = LinkClicked Browser.UrlRequest
+    | UrlChanged Url.Url
+    | HomePageMsg Home.Msg
+    | CategoriesPageMsg Categories.Msg
+    | ImagesPageMsg Images.Msg
+    | AboutPageMsg About.Msg
 
 -- MAIN
 main : Program () Model Msg
 main =
-  Browser.application
-    { init = init
-    , view = view
-    , update = update
-    , subscriptions = subscriptions
-    , onUrlChange = UrlChanged
-    , onUrlRequest = LinkClicked
-    }
+    Browser.application
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        , onUrlChange = UrlChanged
+        , onUrlRequest = LinkClicked
+        }
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
@@ -63,60 +63,60 @@ init flags url key =
 -- UPDATE
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case ( msg, model.page ) of
+    case ( msg, model.page ) of
     (LinkClicked urlRequest, _) ->
-      case urlRequest of
+        case urlRequest of
         Browser.Internal url ->
-          ( model, Nav.pushUrl model.key (Url.toString url) )
+            ( model, Nav.pushUrl model.key (Url.toString url) )
 
         Browser.External href ->
-          ( model, Nav.load href )
+            ( model, Nav.load href )
 
     (UrlChanged url, _)  ->
         let
             newRoute = Route.parseUrl url
         in
-        ( { model | route = newRoute }, Cmd.none )
-            |> initCurrentPage
+            ( { model | route = newRoute }, Cmd.none )
+                |> initCurrentPage
 
     ( HomePageMsg subMsg, HomePage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
                 Home.update subMsg pageModel
         in
-        ( { model | page = HomePage updatedPageModel }
-        , Cmd.none
-        )
+            ( { model | page = HomePage updatedPageModel }
+            , Cmd.none
+            )
 
     ( CategoriesPageMsg subMsg, CategoriesPage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
                 Categories.update subMsg pageModel
         in
-        ( { model | page = CategoriesPage updatedPageModel }
-        , Cmd.none
-        )
+            ( { model | page = CategoriesPage updatedPageModel }
+            , Cmd.none
+            )
 
     ( ImagesPageMsg subMsg, ImagesPage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
                 Images.update subMsg pageModel
         in
-        ( { model | page = ImagesPage updatedPageModel }
-        , Cmd.none
-        )
+            ( { model | page = ImagesPage updatedPageModel }
+            , Cmd.none
+            )
 
     ( AboutPageMsg subMsg, AboutPage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
                 About.update subMsg pageModel
         in
-        ( { model | page = AboutPage updatedPageModel }
-        , Cmd.none
-        )
+            ( { model | page = AboutPage updatedPageModel }
+            , Cmd.none
+            )
     
     ( _, _ ) ->
-      ( model, Cmd.none )
+        ( model, Cmd.none )
 
 initCurrentPage : ( Model, Cmd Msg ) -> ( Model, Cmd Msg )
 initCurrentPage ( model, existingCmds ) =
@@ -150,27 +150,27 @@ initCurrentPage ( model, existingCmds ) =
                 in
                     ( AboutPage pageModel, Cmd.none )
     in
-    ( { model | page = currentPage }
-    , Cmd.batch [ existingCmds, mappedPageCmds ]
-    )
+        ( { model | page = currentPage }
+        , Cmd.batch [ existingCmds, mappedPageCmds ]
+        )
 
 
 -- SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-  Sub.none
+    Sub.none
 
 -- VIEW
 
 view : Model -> Browser.Document Msg
 view model =
-  { title = "Gollery app"
-  , body = [ currentView model ]
-  }
+    { title = "Gollery app"
+    , body = [ currentView model ]
+    }
 
 currentView : Model -> Html Msg
 currentView model =
-  case model.page of
+    case model.page of
     NotFoundPage ->
       notFoundView
 
