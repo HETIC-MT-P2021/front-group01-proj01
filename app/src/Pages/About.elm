@@ -35,7 +35,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div[]
+    div[class "content"]
         [
             map HeaderMsg (Header.view model.header)
             , div []
