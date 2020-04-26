@@ -17,6 +17,78 @@ h1 {
   min-height: 800px;
 }
 
+/* HEADER */
+
+.header{
+  width: 100%;
+  background: #00121b;
+  -webkit-box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.18);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.18);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+.header h1{
+  margin: 0;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+}
+
+.nav-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.nav-items .main-nav {
+  width: 100%;
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-items .main-nav li a {
+  color: white!important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--theme-color1);
+  text-transform: uppercase;
+  padding-right: 7px;
+  padding-left: 7px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 10px;
+  margin-left: 10px;
+  display: block;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  white-space: nowrap;
+}
+
+.container {
+  margin: auto;
+  width: 93%;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-items .main-nav li a:hover {
+  border-color: orange;
+}
+
+.site-logo {
+  width: 50.33px;
+  margin-right: 50px;
+}
+
 /* FOOTER */
 .footer {
 	width: 100%;

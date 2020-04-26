@@ -16,3 +16,4 @@ FROM nginx:alpine
 COPY --from=builder /root/build/ /usr/share/nginx/html
 COPY app/index.html /usr/share/nginx/html
 COPY app/style.css /usr/share/nginx/html
+COPY app/assets /usr/share/nginx/html/assets
