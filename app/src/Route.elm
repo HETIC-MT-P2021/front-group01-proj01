@@ -6,8 +6,9 @@ import Url.Parser as Parser exposing (parse, Parser, oneOf, s)
 type Route
     = NotFound
     | Home
+    | Categories
+    | Images
     | About
-
 
 parseUrl : Url -> Route
 parseUrl url =
@@ -24,5 +25,7 @@ matchRoute =
     oneOf
         [ Parser.map Home Parser.top
         , Parser.map Home (s "home")
+        , Parser.map Categories (s "categories")
+        , Parser.map Images (s "images")
         , Parser.map About (s "about")
         ]

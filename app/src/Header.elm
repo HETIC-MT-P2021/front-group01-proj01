@@ -20,11 +20,14 @@ init =
         [ { name = "Accueil"
         , link = "/"
         }
+        , { name = "Les images"
+        , link = "/images"
+        }
+        , { name = "Les Catégories"
+        , link = "/categories"
+        }
         , { name = "A propos"
         , link = "/about"
-        }
-        , { name = "Catégories"
-        , link = "/categories"
         }
         ]
     }

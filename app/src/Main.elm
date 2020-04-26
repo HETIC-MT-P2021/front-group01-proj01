@@ -7,14 +7,18 @@ import Html.Attributes exposing (..)
 import Url exposing (Url, toString)
 
 import Pages.Home as Home
+import Pages.Categories as Categories
+import Pages.Images as Images
 import Pages.About as About
-import Pages.NotFound as NotFound
+
 import Route exposing (Route)
 
 -- MODEL
 
 type Page = 
   HomePage Home.Model
+  | CategoriesPage Categories.Model
+  | ImagesPage Images.Model
   | AboutPage About.Model
   | NotFoundPage
 
@@ -29,8 +33,9 @@ type Msg
   = LinkClicked Browser.UrlRequest
   | UrlChanged Url.Url
   | HomePageMsg Home.Msg
+  | CategoriesPageMsg Categories.Msg
+  | ImagesPageMsg Images.Msg
   | AboutPageMsg About.Msg
-  | NotFoundPageMsg NotFound.Msg
 
 -- MAIN
 main : Program () Model Msg
@@ -83,6 +88,24 @@ update msg model =
         , Cmd.none
         )
 
+    ( CategoriesPageMsg subMsg, CategoriesPage pageModel ) ->
+        let
+            ( updatedPageModel, updatedCmd ) =
+                Categories.update subMsg pageModel
+        in
+        ( { model | page = CategoriesPage updatedPageModel }
+        , Cmd.none
+        )
+
+    ( ImagesPageMsg subMsg, ImagesPage pageModel ) ->
+        let
+            ( updatedPageModel, updatedCmd ) =
+                Images.update subMsg pageModel
+        in
+        ( { model | page = ImagesPage updatedPageModel }
+        , Cmd.none
+        )
+
     ( AboutPageMsg subMsg, AboutPage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
@@ -108,6 +131,18 @@ initCurrentPage ( model, existingCmds ) =
                     ( pageModel, pageCmds ) = Home.init
                 in
                     ( HomePage pageModel, Cmd.none )
+            
+            Route.Categories ->
+                let
+                    ( pageModel, pageCmds ) = Categories.init
+                in
+                    ( CategoriesPage pageModel, Cmd.none )
+            
+            Route.Images ->
+                let
+                    ( pageModel, pageCmds ) = Images.init
+                in
+                    ( ImagesPage pageModel, Cmd.none )
         
             Route.About ->
                 let
@@ -143,10 +178,22 @@ currentView model =
       Home.view pageModel
         |> Html.map HomePageMsg
 
+    CategoriesPage pageModel ->
+      Categories.view pageModel
+        |> Html.map CategoriesPageMsg
+
+    ImagesPage pageModel ->
+      Images.view pageModel
+        |> Html.map ImagesPageMsg
+
     AboutPage pageModel ->
       About.view pageModel
         |> Html.map AboutPageMsg
 
 notFoundView : Html msg
 notFoundView =
-    h3 [] [ text "404 page introuvable" ]
+    div[] 
+    [
+      h3 [] [ text "404 page introuvable" ],
+      a [href "/"] [text "retour a l'accueil"]
+    ]
