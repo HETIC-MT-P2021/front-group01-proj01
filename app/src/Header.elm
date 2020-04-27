@@ -11,7 +11,8 @@ type alias NavItem =
     }
 
 type alias Model =
-    { itemsNav : List NavItem
+    { 
+        itemsNav : List NavItem
     }
 
 init : Model
