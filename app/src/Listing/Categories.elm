@@ -1,4 +1,4 @@
-module Listing.Categories exposing (..)
+module Listing.Categories exposing (Msg(..), Model, init, update, view)
 
 import Html exposing (Html, Attribute, h1, map, text, div, ul, p)
 import Html.Attributes exposing (class, href)

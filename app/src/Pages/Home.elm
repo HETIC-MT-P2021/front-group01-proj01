@@ -22,12 +22,10 @@ init =
       , categories = Categories.init
       }, Cmd.none )
 
-
 type Msg 
     = HeaderMsg Header.Msg
     | FooterMsg Footer.Msg
     | CategoriesMsg Categories.Msg
-    | UpdateCategories 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -41,21 +39,24 @@ update msg model =
     CategoriesMsg categoriesMsg ->
         ( { model | categories = Categories.update categoriesMsg model.categories }, Cmd.none )
 
-    -- TODO : Update the Categories Model with new Data
-    UpdateCategories ->
-        ( Categories.update [{id = 1, name = "toto", description = "toto", createdAt = "", updatedAt = ""}] )
-
-
 view : Model -> Html Msg
 view model =
-    div[class "content"]
-        [
-            map HeaderMsg (Header.view model.header)
-            , div []
-                [ 
-                    h1 [] [ text "Page home" ] 
-                ]
-            , map CategoriesMsg (Categories.view model.categories)
-            , button [ onClick UpdateCategories ] [ text "Categories suivantes" ]
-            , map FooterMsg (Footer.view model.footer)
-        ]
+    let
+        setCategories = CategoriesMsg (Categories.SetCategories [{ id = 1,
+            name = "Animaux",
+            description = "Des animaux",
+            createdAt = "2020-05-27T16:43:58.0149453Z",
+            updatedAt = "2020-05-27T16:43:58.0149453Z"
+            }])
+    in
+        div[class "content"]
+            [
+                map HeaderMsg (Header.view model.header)
+                , div []
+                    [ 
+                        h1 [] [ text "Page home" ] 
+                    ]
+                , map CategoriesMsg (Categories.view model.categories)
+                , button [ onClick setCategories ] [ text "Categories suivantes" ]
+                , map FooterMsg (Footer.view model.footer)
+            ]
