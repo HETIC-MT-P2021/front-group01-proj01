@@ -1,7 +1,7 @@
 module Pages.Categories exposing (view, Msg, update, init, Model)
 
-import Html exposing (Html, Attribute, h1, map, text, div, p)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, h1, map, text, div, p)
+import Html.Attributes exposing (class)
 import Html.Events exposing (..)
 
 import Header
@@ -35,13 +35,16 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div[class "content"]
-        [
-            map HeaderMsg (Header.view model.header)
-            , div []
-                [ 
-                    h1 [] [ text "Page des catégories" ]
-                    ,p [] [ text "Sur cette page seront listés les catégories"] 
-                ]
-            , map FooterMsg (Footer.view model.footer)
-        ]
+    div[] [
+        map HeaderMsg (Header.view model.header)
+        , div[class "content"]
+            [
+                div []
+                    [ 
+                        h1 [] [ text "Page des catégories" ]
+                        ,p [] [ text "Sur cette page seront listés les catégories"] 
+                    ]
+            ]
+        , map FooterMsg (Footer.view model.footer)
+    ]
+    

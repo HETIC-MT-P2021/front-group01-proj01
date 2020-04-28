@@ -1,7 +1,7 @@
 module Pages.Images exposing (view, Msg, update, init, Model)
 
-import Html exposing (Html, Attribute, h1, map, text, div, p)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, h1, map, text, div, p)
+import Html.Attributes exposing (class)
 import Html.Events exposing (..)
 
 import Header
@@ -35,13 +35,16 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div[class "content"]
+    div []
+    [
+        map HeaderMsg (Header.view model.header)
+        , div[class "content"]
         [
-            map HeaderMsg (Header.view model.header)
-            , div []
+            div []
                 [ 
                     h1 [] [ text "Page des images" ]
                     ,p [] [ text "Sur cette page seront listés les images"] 
                 ]
-            , map FooterMsg (Footer.view model.footer)
         ]
+        , map FooterMsg (Footer.view model.footer)
+    ]

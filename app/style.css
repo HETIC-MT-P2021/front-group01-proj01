@@ -14,8 +14,95 @@ h1 {
 }
 
 .content{
-  min-height: 800px;
+  height: 100%;
+  min-height: 600px;
+  position: relative;
+  text-align: center;
 }
+
+/* CATEGORIES LISTING */
+.categories table{
+  margin: 0 auto;
+  border: solid 1px orange;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font: normal 13px Arial, sans-serif;
+}
+
+.categories thead th {
+  background-color: orange;
+  border: solid 1px orange;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.categories a{
+  text-decoration: none;
+  padding: 5px;
+  padding-right: 20px;
+  padding-left: 20px;
+  background-color: orange;
+  color: white;
+  border-radius: 20px;
+  text-shadow: none;
+}
+
+.categories a:hover{
+  cursor: pointer;
+  background-color: red;
+  color: white;
+}
+
+.categories tbody td {
+  border: solid 1px orange;
+  color: #333;
+  padding: 10px;
+  text-shadow: 1px 1px 1px #fff;
+}
+
+/* IMAGES LISTING */
+.image-listing{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.image-listing a{
+  text-decoration: none;
+}
+
+.image-item{
+  display: inline-block;
+  position: relative;
+  transition: all 1s ease-in-out;
+}
+
+.image-item:hover{
+  transform: scale(1.01);
+}
+
+.image-item:hover img{
+  opacity: 0.2;
+}
+
+.image-item:hover .image-text{
+  color: orange;
+}
+
+.image-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: transparent;
+}
+
+.image-name{
+  font-weight: bold;
+}
+
 
 /* HEADER */
 
@@ -95,7 +182,6 @@ h1 {
 	background: #00121b;
   display: block;
   position: absolute;
-  bottom: 0;
  }
 
 .inner-footer {

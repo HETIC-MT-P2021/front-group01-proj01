@@ -8,8 +8,11 @@ import Url exposing (Url, toString)
 
 import Pages.Home as Home
 import Pages.Categories as Categories
+import Pages.Category as Category
 import Pages.Images as Images
+import Pages.Image as Image
 import Pages.About as About
+
 
 import Route exposing (Route)
 
@@ -18,7 +21,9 @@ import Route exposing (Route)
 type Page = 
     HomePage Home.Model
     | CategoriesPage Categories.Model
+    | CategoryPage Int Category.Model
     | ImagesPage Images.Model
+    | ImagePage Int Image.Model
     | AboutPage About.Model
     | NotFoundPage
 
@@ -34,7 +39,9 @@ type Msg
     | UrlChanged Url.Url
     | HomePageMsg Home.Msg
     | CategoriesPageMsg Categories.Msg
+    | CategoryPageMsg Category.Msg
     | ImagesPageMsg Images.Msg
+    | ImagePageMsg Image.Msg
     | AboutPageMsg About.Msg
 
 -- MAIN
@@ -97,12 +104,30 @@ update msg model =
             , Cmd.none
             )
 
+    ( CategoryPageMsg subMsg, CategoryPage id pageModel ) ->
+        let
+            ( updatedPageModel, updatedCmd ) =
+                Category.update subMsg pageModel
+        in
+            ( { model | page = CategoryPage id updatedPageModel }
+            , Cmd.none
+            )
+
     ( ImagesPageMsg subMsg, ImagesPage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
                 Images.update subMsg pageModel
         in
             ( { model | page = ImagesPage updatedPageModel }
+            , Cmd.none
+            )
+
+    ( ImagePageMsg subMsg, ImagePage id pageModel ) ->
+        let
+            ( updatedPageModel, updatedCmd ) =
+                Image.update subMsg pageModel
+        in
+            ( { model | page = ImagePage id updatedPageModel }
             , Cmd.none
             )
 
@@ -137,12 +162,24 @@ initCurrentPage ( model, existingCmds ) =
                     ( pageModel, pageCmds ) = Categories.init
                 in
                     ( CategoriesPage pageModel, Cmd.none )
+
+            Route.Category id ->
+                let
+                    ( pageModel, pageCmds ) = Category.init id
+                in
+                    ( CategoryPage id pageModel, Cmd.none )
             
             Route.Images ->
                 let
                     ( pageModel, pageCmds ) = Images.init
                 in
                     ( ImagesPage pageModel, Cmd.none )
+
+            Route.Image id ->
+                let
+                    ( pageModel, pageCmds ) = Image.init id
+                in
+                    ( ImagePage id pageModel, Cmd.none )
         
             Route.About ->
                 let
@@ -182,9 +219,17 @@ currentView model =
       Categories.view pageModel
         |> Html.map CategoriesPageMsg
 
+    CategoryPage _ pageModel ->
+      Category.view pageModel
+        |> Html.map CategoryPageMsg
+
     ImagesPage pageModel ->
       Images.view pageModel
         |> Html.map ImagesPageMsg
+    
+    ImagePage _ pageModel ->
+      Image.view pageModel
+        |> Html.map ImagePageMsg
 
     AboutPage pageModel ->
       About.view pageModel
