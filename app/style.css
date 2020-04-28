@@ -14,7 +14,9 @@ h1 {
 }
 
 .content{
-  min-height: 800px;
+  height: 100%;
+  min-height: 600px;
+  position: relative;
   text-align: center;
 }
 
@@ -58,6 +60,47 @@ h1 {
   color: #333;
   padding: 10px;
   text-shadow: 1px 1px 1px #fff;
+}
+
+/* IMAGES LISTING */
+.image-listing{
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.image-listing a{
+  text-decoration: none;
+}
+
+.image-item{
+  display: inline-block;
+  position: relative;
+  transition: all 1s ease-in-out;
+}
+
+.image-item:hover{
+  transform: scale(1.01);
+}
+
+.image-item:hover img{
+  opacity: 0.2;
+}
+
+.image-item:hover .image-text{
+  color: orange;
+}
+
+.image-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: transparent;
+}
+
+.image-name{
+  font-weight: bold;
 }
 
 
@@ -139,7 +182,6 @@ h1 {
 	background: #00121b;
   display: block;
   position: absolute;
-  bottom: 0;
  }
 
 .inner-footer {

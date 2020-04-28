@@ -1,6 +1,6 @@
 module Header exposing (..)
 
-import Html exposing (Html, a, button, div, text, p, img, ul, li, h1)
+import Html exposing (Html, a, div, text, img, ul, li, h1)
 import Html.Attributes exposing (class, href, src)
 
 -- MODEL

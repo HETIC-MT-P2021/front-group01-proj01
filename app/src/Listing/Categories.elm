@@ -1,11 +1,8 @@
 module Listing.Categories exposing (Msg(..), Model, init, update, view)
 
-import Html exposing (Html, Attribute, h1, map, text, div, ul, p, table, thead, tbody, td, tr, th, a)
+import Html exposing (Html, map, text, div, table, thead, tbody, td, tr, th, a)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (..)
-import Browser.Navigation as Nav
-import Json.Decode as Decode
-import Time
 
 type alias Category = 
     {

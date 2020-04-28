@@ -10,6 +10,7 @@ type Route
     | Images
     | About
     | Category Int
+    | Image Int
 
 parseUrl : Url -> Route
 parseUrl url =
@@ -29,5 +30,6 @@ matchRoute =
         , Parser.map Categories (s "categories")
         , Parser.map Category (s "category" </> int)
         , Parser.map Images (s "images")
+        , Parser.map Image (s "image" </> int)
         , Parser.map About (s "about")
         ]

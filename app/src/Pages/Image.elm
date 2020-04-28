@@ -1,22 +1,33 @@
-module Pages.About exposing (view, Msg, update, init, Model)
+module Pages.Image exposing (view, Msg, update, init, Model)
 
-import Html exposing (Html, h1, map, text, div, p)
+import Html exposing (Html, h1, map, text, div, span)
 import Html.Attributes exposing (class)
 import Html.Events exposing (..)
 
 import Header
 import Footer
 
-init : ( Model, Cmd Msg )
-init =
+init : Int -> ( Model, Cmd Msg )
+init id =
     ( { header = Header.init
       , footer = Footer.init
+      , imageId = id
+      , imageData = Nothing
       }, Cmd.none )
 
 type alias Model =
     { 
         header: Header.Model
         , footer: Footer.Model
+        , imageId: Int
+        , imageData: Maybe Image
+    }
+
+type alias Image =
+    { 
+        description: String
+        , tags: List String
+        , name: String
     }
 
 type Msg 
@@ -35,15 +46,15 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    div [] 
-    [
+    div []
+    [   
         map HeaderMsg (Header.view model.header)
         , div[class "content"]
         [
             div []
                 [ 
-                    h1 [] [ text "Page à propos" ]
-                    ,p [] [ text "Ceci est projet d'école, nous permettant de découvrir la programmation fonctionnelle grâce au langage ELM"] 
+                    h1 [] [ text "Page de l'image"],
+                    span [] [text (String.fromInt model.imageId)]
                 ]
         ]
         , map FooterMsg (Footer.view model.footer)

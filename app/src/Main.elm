@@ -10,6 +10,7 @@ import Pages.Home as Home
 import Pages.Categories as Categories
 import Pages.Category as Category
 import Pages.Images as Images
+import Pages.Image as Image
 import Pages.About as About
 
 
@@ -22,6 +23,7 @@ type Page =
     | CategoriesPage Categories.Model
     | CategoryPage Int Category.Model
     | ImagesPage Images.Model
+    | ImagePage Int Image.Model
     | AboutPage About.Model
     | NotFoundPage
 
@@ -39,6 +41,7 @@ type Msg
     | CategoriesPageMsg Categories.Msg
     | CategoryPageMsg Category.Msg
     | ImagesPageMsg Images.Msg
+    | ImagePageMsg Image.Msg
     | AboutPageMsg About.Msg
 
 -- MAIN
@@ -119,6 +122,15 @@ update msg model =
             , Cmd.none
             )
 
+    ( ImagePageMsg subMsg, ImagePage id pageModel ) ->
+        let
+            ( updatedPageModel, updatedCmd ) =
+                Image.update subMsg pageModel
+        in
+            ( { model | page = ImagePage id updatedPageModel }
+            , Cmd.none
+            )
+
     ( AboutPageMsg subMsg, AboutPage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
@@ -162,6 +174,12 @@ initCurrentPage ( model, existingCmds ) =
                     ( pageModel, pageCmds ) = Images.init
                 in
                     ( ImagesPage pageModel, Cmd.none )
+
+            Route.Image id ->
+                let
+                    ( pageModel, pageCmds ) = Image.init id
+                in
+                    ( ImagePage id pageModel, Cmd.none )
         
             Route.About ->
                 let
@@ -208,6 +226,10 @@ currentView model =
     ImagesPage pageModel ->
       Images.view pageModel
         |> Html.map ImagesPageMsg
+    
+    ImagePage _ pageModel ->
+      Image.view pageModel
+        |> Html.map ImagePageMsg
 
     AboutPage pageModel ->
       About.view pageModel

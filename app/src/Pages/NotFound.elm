@@ -1,7 +1,6 @@
 module Pages.NotFound exposing (view, Msg, update, init, Model)
 
-import Html exposing (Html, Attribute, h1, map, text, div)
-import Html.Attributes exposing (class, href)
+import Html exposing (Html, h1, map, text, div)
 import Html.Events exposing (..)
 
 import Header
