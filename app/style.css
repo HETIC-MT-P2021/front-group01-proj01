@@ -36,9 +36,20 @@ h1 {
   text-shadow: 1px 1px 1px #000;
 }
 
-.categories tr:hover{
-  cursor: pointer;
+.categories a{
+  text-decoration: none;
+  padding: 5px;
+  padding-right: 20px;
+  padding-left: 20px;
   background-color: orange;
+  color: white;
+  border-radius: 20px;
+  text-shadow: none;
+}
+
+.categories a:hover{
+  cursor: pointer;
+  background-color: red;
   color: white;
 }
 

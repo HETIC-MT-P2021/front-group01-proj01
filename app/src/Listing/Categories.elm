@@ -1,18 +1,19 @@
 module Listing.Categories exposing (Msg(..), Model, init, update, view)
 
-import Html exposing (Html, Attribute, h1, map, text, div, ul, p, table, thead, tbody, td, tr, th)
+import Html exposing (Html, Attribute, h1, map, text, div, ul, p, table, thead, tbody, td, tr, th, a)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (..)
+import Browser.Navigation as Nav
 import Json.Decode as Decode
 import Time
 
 type alias Category = 
     {
-        id : Int,
-        name : String,
-        description : String,
-        createdAt : String,
-        updatedAt : String
+        id : Int
+        , name : String
+        , description : String
+        , createdAt : String
+        , updatedAt : String
     }
 
 type alias Model = 
@@ -47,12 +48,16 @@ init =
 
 renderCategory : Category -> Html msg
 renderCategory category =
+    let
+        categoryUrl = "/category/" ++ String.fromInt category.id
+    in
         tr[]
         [
             td[] [text (String.fromInt category.id)],
             td[] [text category.name],
             td[] [text category.description],
-            td[] [text category.updatedAt]
+            td[] [text category.updatedAt],
+            td[] [a [href categoryUrl][text "Voir"]]
         ]
 
 renderCategories : List Category -> Html msg

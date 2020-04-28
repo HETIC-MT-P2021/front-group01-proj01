@@ -1,7 +1,7 @@
 module Route exposing (Route(..), parseUrl)
 
 import Url exposing (Url)
-import Url.Parser as Parser exposing (parse, Parser, oneOf, s)
+import Url.Parser as Parser exposing ((</>), parse, Parser, oneOf, s, int)
 
 type Route
     = NotFound
@@ -9,6 +9,7 @@ type Route
     | Categories
     | Images
     | About
+    | Category Int
 
 parseUrl : Url -> Route
 parseUrl url =
@@ -26,6 +27,7 @@ matchRoute =
         [ Parser.map Home Parser.top
         , Parser.map Home (s "home")
         , Parser.map Categories (s "categories")
+        , Parser.map Category (s "category" </> int)
         , Parser.map Images (s "images")
         , Parser.map About (s "about")
         ]

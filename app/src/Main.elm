@@ -8,8 +8,10 @@ import Url exposing (Url, toString)
 
 import Pages.Home as Home
 import Pages.Categories as Categories
+import Pages.Category as Category
 import Pages.Images as Images
 import Pages.About as About
+
 
 import Route exposing (Route)
 
@@ -18,6 +20,7 @@ import Route exposing (Route)
 type Page = 
     HomePage Home.Model
     | CategoriesPage Categories.Model
+    | CategoryPage Int Category.Model
     | ImagesPage Images.Model
     | AboutPage About.Model
     | NotFoundPage
@@ -34,6 +37,7 @@ type Msg
     | UrlChanged Url.Url
     | HomePageMsg Home.Msg
     | CategoriesPageMsg Categories.Msg
+    | CategoryPageMsg Category.Msg
     | ImagesPageMsg Images.Msg
     | AboutPageMsg About.Msg
 
@@ -97,6 +101,15 @@ update msg model =
             , Cmd.none
             )
 
+    ( CategoryPageMsg subMsg, CategoryPage id pageModel ) ->
+        let
+            ( updatedPageModel, updatedCmd ) =
+                Category.update subMsg pageModel
+        in
+            ( { model | page = CategoryPage id updatedPageModel }
+            , Cmd.none
+            )
+
     ( ImagesPageMsg subMsg, ImagesPage pageModel ) ->
         let
             ( updatedPageModel, updatedCmd ) =
@@ -137,6 +150,12 @@ initCurrentPage ( model, existingCmds ) =
                     ( pageModel, pageCmds ) = Categories.init
                 in
                     ( CategoriesPage pageModel, Cmd.none )
+
+            Route.Category id ->
+                let
+                    ( pageModel, pageCmds ) = Category.init id
+                in
+                    ( CategoryPage id pageModel, Cmd.none )
             
             Route.Images ->
                 let
@@ -181,6 +200,10 @@ currentView model =
     CategoriesPage pageModel ->
       Categories.view pageModel
         |> Html.map CategoriesPageMsg
+
+    CategoryPage _ pageModel ->
+      Category.view pageModel
+        |> Html.map CategoryPageMsg
 
     ImagesPage pageModel ->
       Images.view pageModel
