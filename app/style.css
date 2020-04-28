@@ -15,7 +15,40 @@ h1 {
 
 .content{
   min-height: 800px;
+  text-align: center;
 }
+
+/* CATEGORIES LISTING */
+.categories table{
+  margin: 0 auto;
+  border: solid 1px orange;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font: normal 13px Arial, sans-serif;
+}
+
+.categories thead th {
+  background-color: orange;
+  border: solid 1px orange;
+  color: white;
+  padding: 10px;
+  text-align: left;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.categories tr:hover{
+  cursor: pointer;
+  background-color: orange;
+  color: white;
+}
+
+.categories tbody td {
+  border: solid 1px orange;
+  color: #333;
+  padding: 10px;
+  text-shadow: 1px 1px 1px #fff;
+}
+
 
 /* HEADER */
 

@@ -1,6 +1,6 @@
 module Pages.Home exposing (view, Msg, update, init, Model)
 
-import Html exposing (Html, Attribute, h1, map, text, div, ul, p, button)
+import Html exposing (Html, Attribute, h1, h2, map, text, div, ul, p, button)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (..)
 
@@ -49,14 +49,20 @@ view model =
             updatedAt = "2020-05-27T16:43:58.0149453Z"
             }])
     in
-        div[class "content"]
+        div[]
+        [
+            map HeaderMsg (Header.view model.header)
+            , div[class "content"]
             [
-                map HeaderMsg (Header.view model.header)
-                , div []
+                
+                div []
                     [ 
                         h1 [] [ text "Page home" ] 
                     ]
+                , h2 [] [text "Dernières catégories ajoutées"]
                 , map CategoriesMsg (Categories.view model.categories)
                 , button [ onClick setCategories ] [ text "Categories suivantes" ]
-                , map FooterMsg (Footer.view model.footer)
             ]
+            , map FooterMsg (Footer.view model.footer)
+        ]
+        

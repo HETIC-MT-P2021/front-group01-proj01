@@ -1,6 +1,6 @@
 module Listing.Categories exposing (Msg(..), Model, init, update, view)
 
-import Html exposing (Html, Attribute, h1, map, text, div, ul, p)
+import Html exposing (Html, Attribute, h1, map, text, div, ul, p, table, thead, tbody, td, tr, th)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (..)
 import Json.Decode as Decode
@@ -47,15 +47,33 @@ init =
 
 renderCategory : Category -> Html msg
 renderCategory category =
-        p [] [text category.name]
+        tr[]
+        [
+            td[] [text (String.fromInt category.id)],
+            td[] [text category.name],
+            td[] [text category.description],
+            td[] [text category.updatedAt]
+        ]
 
 renderCategories : List Category -> Html msg
 renderCategories categories =
     let 
-        category =
-            List.map renderCategory categories
+        category = List.map renderCategory categories
     in
-        ul [] category
+        table [] 
+        [
+            thead[] 
+            [
+                tr []
+                [
+                    th [] [text "Identifiants"],
+                    th [] [text "Nom"],
+                    th [] [text "Description"],
+                    th [] [text "Dernière MAJ"]
+                ]
+            ],
+            tbody [] category
+        ]
 
 type Msg 
     =  SetCategories (List Category)
@@ -68,7 +86,7 @@ update msg model =
 
 view : Model -> Html msg
 view model =
-    div []
+    div [class "categories"]
     [
         renderCategories model.listCategories
     ]
