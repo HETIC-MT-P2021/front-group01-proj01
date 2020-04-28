@@ -44,7 +44,7 @@ This repository contains all the front elm code for the image gallery project
 
 [Doumentation](https://package.elm-lang.org/packages/elm/url/latest)
 
-### elm/time
+### elm/http
 > Handles http requests in Elm and calls to servers
 
 [Doumentation](https://package.elm-lang.org/packages/elm/time/latest)
