@@ -13,6 +13,8 @@ This repository contains all the front elm code for the image gallery project
 ``` docker-compose up --build```
 > Run the project
 
+Go to [localhost:8000](http://localhost:8000) once your docker container is up
+
 ## Modules used for this project
 
 ### elm/core
