@@ -20,6 +20,28 @@ h1 {
   text-align: center;
 }
 
+.orange-btn{
+  text-align: center;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 30px;
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.orange-btn:hover{
+  background-color: #FF8A33;
+}
+
+.align-center{
+  margin: 0 auto;
+  text-align: center;
+}
+
 /* CATEGORIES LISTING */
 .categories table{
   margin: 0 auto;
@@ -109,6 +131,30 @@ h1 {
 
 .image-name{
   font-weight: bold;
+}
+
+/* FORM */
+
+.form {
+  margin: 0 auto;
+  text-align: center;
+  padding: 15px;
+}
+
+.form-content{
+  height: auto;
+  width: 20%;
+  margin: 0 auto;
+  border: 3px solid orange;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #222222;
+  color: white;
+}
+
+.form input{
+  margin: 10px;
+  font-size: 16px;
 }
 
 /* HEADER */
