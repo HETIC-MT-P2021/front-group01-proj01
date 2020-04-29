@@ -8,6 +8,11 @@ import Json.Decode as Decode exposing (Decoder)
 
 import Header
 import Footer
+
+-- Those will display images and categories coded by hand
+-- As our http.get returns nothing
+-- So we will see how the images and Categories display
+import Listing.Categories as Categories
 import Listing.Images as Images
 
 type alias Category = 
@@ -19,12 +24,26 @@ type alias Category =
         , updatedAt : String
     }
 
+type alias Image = 
+    {
+        id : Int
+        , name : String
+        , description : String
+        , url : String
+        , category : Category
+        , tags : List String
+        , createdAt : String
+        , updatedAt : String
+    }
+
 type alias Model =
     { 
         header: Header.Model
         , footer: Footer.Model
-        , images: Images.Model
-        , listCategory: List Category
+        , categories: Categories.Model -- The hardcoded categories for the demo
+        , images: Images.Model -- The hardcoded images for the demo
+        , lastCategories: List Category
+        , lastImages: List Image
         , error: Maybe String
     }
 
@@ -32,23 +51,28 @@ init : ( Model, Cmd Msg )
 init =
     ( { header = Header.init
       , footer = Footer.init
+      , categories = Categories.init
       , images = Images.init
-      , listCategory = []
+      , lastCategories = []
+      , lastImages = []
       , error = Nothing
-      }, getCategories )
+      }, getLastCategories )
 
 type Msg 
     = HeaderMsg Header.Msg
     | FooterMsg Footer.Msg
+    | CategoriesMsg Categories.Msg
     | ImagesMsg Images.Msg
-    | SendHttpRequest
-    | GotItems (Result Http.Error (List Category))
+    | GetLastCategories
+    | GotCategories (Result Http.Error (List Category))
+    | GetLastImages
+    | GotImages (Result Http.Error (List Image))
 
-getCategories : Cmd Msg
-getCategories = 
+getLastCategories : Cmd Msg
+getLastCategories = 
     Http.get
-    { url = "http://localhost:8080/categories"
-    , expect = Http.expectJson GotItems (Decode.list decodeCategory)
+    { url = "http://localhost:8080/categories?updated_at=desc"
+    , expect = Http.expectJson GotCategories (Decode.list decodeCategory)
     }
 
 decodeCategory : Decoder Category
@@ -57,6 +81,25 @@ decodeCategory =
         (Decode.field "id" Decode.int)
         (Decode.field "name" Decode.string)
         (Decode.field "description" Decode.string)
+        (Decode.field "createdAt" Decode.string)
+        (Decode.field "updatedAt" Decode.string)
+
+getLastImages : Cmd Msg
+getLastImages = 
+    Http.get
+    { url = "http://localhost:8080/images?updated_at=desc"
+    , expect = Http.expectJson GotImages (Decode.list decodeImage)
+    }
+
+decodeImage : Decoder Image
+decodeImage =
+    Decode.map8 Image
+        (Decode.field "id" Decode.int)
+        (Decode.field "name" Decode.string)
+        (Decode.field "description" Decode.string)
+        (Decode.field "url" Decode.string)
+        (Decode.field "category" decodeCategory)
+        (Decode.field "tags" (Decode.list Decode.string))
         (Decode.field "createdAt" Decode.string)
         (Decode.field "updatedAt" Decode.string)
 
@@ -69,17 +112,29 @@ update msg model =
     FooterMsg footerMsg ->
         ( { model | footer = Footer.update footerMsg model.footer }, Cmd.none )
 
+    CategoriesMsg categoriesMsg ->
+        ( { model | categories = Categories.update categoriesMsg model.categories }, Cmd.none )
+
     ImagesMsg imagesMsg ->
         ( { model | images = Images.update imagesMsg model.images }, Cmd.none )
 
-    SendHttpRequest ->
-        (model, getCategories)
+    GetLastCategories ->
+        (model, getLastCategories)
 
-    GotItems (Ok categories) ->
-        ( { model | error = Nothing, listCategory = categories }, Cmd.none )
+    GotCategories (Ok categories) ->
+        ( { model | error = Nothing, lastCategories = categories }, Cmd.none )
 
-    GotItems (Err err) ->
-        ( { model | error = Just <| errorToString err, listCategory = [] }, Cmd.none )
+    GotCategories (Err err) ->
+        ( { model | error = Just <| errorToString err, lastCategories = [] }, Cmd.none )
+    
+    GetLastImages ->
+        (model, getLastImages)
+
+    GotImages (Ok images) ->
+        ( { model | error = Nothing, lastImages = images }, Cmd.none )
+
+    GotImages (Err err) ->
+        ( { model | error = Just <| errorToString err, lastImages = [] }, Cmd.none )
 
 
 errorToString : Http.Error -> String
@@ -113,14 +168,18 @@ view model =
                     h1 [] [ text "Page home" ] 
                 ]
             , h2 [] [text "Dernières catégories ajoutées"]
+            , p[] [text "Ce tableau est vide dû au non fonctionnement de Http.get"]
             , div [class "categories"]
                 [
-                    renderCategories model.listCategory
+                    renderCategories model.lastCategories
                 ]
             , div []
-            [ button [ onClick SendHttpRequest ]
-                [ text "Get data from server" ]
+            [ button [ onClick GetLastCategories ]
+                [ text "Actualiser les catégories" ]
             ]
+            , h2 [] [text "Exemple d'affichage de catégories"]
+            , Html.map CategoriesMsg (Categories.view model.categories)
+            , h2 [] [text "Exemple d'affichage d'images"]
             , Html.map ImagesMsg (Images.view model.images)
         ]
         , Html.map FooterMsg (Footer.view model.footer)
