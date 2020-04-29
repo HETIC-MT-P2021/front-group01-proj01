@@ -91,6 +91,14 @@ h1 {
   color: orange;
 }
 
+.image-item:hover .image-tag{
+  background-color: orange;
+  padding: 5px;
+  border-radius: 20px;
+  color: white;
+  margin: 2px;
+}
+
 .image-text {
   position: absolute;
   top: 50%;
@@ -102,7 +110,6 @@ h1 {
 .image-name{
   font-weight: bold;
 }
-
 
 /* HEADER */
 
