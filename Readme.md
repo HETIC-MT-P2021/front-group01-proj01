@@ -37,7 +37,7 @@ Go to <a href="http://localhost:8000" target="_blank">localhost:8000</a> once yo
 [Doumentation](https://package.elm-lang.org/packages/elm/json/latest)
 
 ### elm/time
-> Provides fucnctionnalities to handle time data
+> Provides functionnalities to handle time data
 
 [Doumentation](https://package.elm-lang.org/packages/elm/time/latest)
 
