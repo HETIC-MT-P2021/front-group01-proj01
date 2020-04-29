@@ -219,34 +219,43 @@ view model =
                         [
                             renderCategories model.listCategory
                         ]
-                        ,button [ onClick GetAllCategories ]
+                        ,button [ class "orange-btn", onClick GetAllCategories ]
                             [ text "Actualiser les catégories" ]
                     ]
             ]
-            , div [] [text "Nouvelle Catégorie"]
-            , span []
-                [ div [] [ text "Nom de la catégorie" ]
-                , viewInput "text" "Nom" model.createForm.name Name
-                , div [] [ text "Description" ]
-                , viewInput "text" "Description" model.createForm.description Description
-                , button [] [ text "Poster la catégorie" ]
-                ]
-            , div [] [text "Modifier une catégorie"]
-            , span []
-                [ div [] [ text "Nom de la catégorie" ]
-                , viewInput "text" "Nom" model.createForm.name Name
-                , div [] [ text "Nouveau nom" ]
-                , viewInput "text" "Description" model.createForm.description Description
-                , div [] [ text "Nouvelle description" ]
-                , viewInput "text" "Description" model.createForm.description Description
-                , button [] [ text "Modifier la catégorie" ]
-                ]
-            , div [] [text "Supprimer une catégorie"]
-            , span []
-                [ div [] [ text "Nom de la catégorie" ]
-                , viewInput "text" "Nom" model.createForm.name Name
-                , button [] [ text "Supprimer la catégorie" ]
-                ]
+             , div [class "form"]
+            [
+                p [] [text "Nouvelle Catégorie"]
+                , div [class "form-content"]
+                    [ div [] [ text "Nom de la catégorie" ]
+                    , viewInput "text" "Nom" model.createForm.name Name
+                    , div [] [ text "Description" ]
+                    , viewInput "text" "Description" model.createForm.description Description
+                    , button [class "orange-btn"] [ text "Poster la catégorie" ]
+                    ]
+            ]
+            , div [class "form"]
+            [
+                p [] [text "Modifier une Catégorie"]
+                , div [class "form-content"]
+                    [ div [] [ text "Nom de la catégorie" ]
+                    , viewInput "text" "Nom" model.createForm.name Name
+                    , div [] [ text "Nouveau nom" ]
+                    , viewInput "text" "Description" model.createForm.description Description
+                    , div [] [ text "Nouvelle description" ]
+                    , viewInput "text" "Description" model.createForm.description Description
+                    , button [class "orange-btn"] [ text "Modifier la catégorie" ]
+                    ]
+            ]
+            , div [class "form"]
+            [
+                p [] [text "Supprimer une catégorie"]
+                , div [class "form-content"]
+                    [ div [] [ text "Nom de la catégorie" ]
+                    , viewInput "text" "Nom" model.createForm.name Name
+                    , button [class "orange-btn"] [ text "Supprimer la catégorie" ]
+                    ]
+            ]
         , map FooterMsg (Footer.view model.footer)
     ]
 
