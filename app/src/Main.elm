@@ -28,10 +28,9 @@ type Page =
     | NotFoundPage
 
 type alias Model =
-    { 
-    key : Nav.Key
-    , page : Page
-    , route : Route
+    { key: Nav.Key
+    , page: Page
+    , route: Route
     }
 
 type Msg
@@ -238,7 +237,6 @@ currentView model =
 notFoundView : Html msg
 notFoundView =
     div[] 
-    [
-      h3 [] [ text "404 page introuvable" ],
-      a [href "/"] [text "retour a l'accueil"]
+    [ h3 [] [ text "404 page introuvable" ]
+    , a [href "/"] [text "retour a l'accueil"]
     ]

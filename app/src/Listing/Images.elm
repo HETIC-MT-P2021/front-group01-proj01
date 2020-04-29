@@ -1,34 +1,32 @@
--- This file is only meant to display hardcoded images on the home page
-
 module Listing.Images exposing (..)
 
 import Html exposing (Html, map, div, p, img, a, text, span)
 import Html.Attributes exposing (class, href, src, width, height)
 import Html.Events exposing (..)
 
+-- This file is only meant to display hardcoded images on the home page
+
 type alias Image = 
-    {
-        id : Int,
-        name : String,
-        slug : String,
-        description : String,
-        createdAt : String,
-        updatedAt : String,
-        url : String,
-        tags : List String,
-        categoryId : Maybe Int,
-        categoryData : Maybe Category
+    { id: Int
+    , name: String
+    , slug: String
+    , description: String
+    , createdAt: String
+    , updatedAt: String
+    , url: String
+    , tags: List String
+    , categoryId: Maybe Int
+    , categoryData: Maybe Category
     }
 
 type alias Model = 
     {
-       listImages : List Image
+       listImages: List Image
     }
 
 type alias Category =
-    {
-        name: String,
-        description: String
+    { name: String
+    , description: String
     }
 
 init : Model
@@ -126,11 +124,11 @@ renderImage image =
             a [href imageRoute] 
             [
                 img [src image.url, width 300, height 300] []
-                , div[class "image-text"] [
-                    p [class "image-name"] [text image.name]
-                    , p [] [text image.description]
-                    , p [] [text image.updatedAt]
-                    , renderTags image.tags
+                , div[class "image-text"] 
+                [ p [class "image-name"] [text image.name]
+                , p [] [text image.description]
+                , p [] [text image.updatedAt]
+                , renderTags image.tags
                 ]
             ]
         ]
@@ -146,7 +144,4 @@ update msg model =
 
 view : Model -> Html msg
 view model =
-    div []
-    [
-        renderImages model.listImages
-    ]
+    div [] [renderImages model.listImages]

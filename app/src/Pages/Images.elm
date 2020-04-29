@@ -10,22 +10,20 @@ import Header
 import Footer
 
 type alias Model =
-    { 
-        header: Header.Model
-        , footer: Footer.Model
-        , listImages: List Image
-        , error: Maybe String
+    { header: Header.Model
+    , footer: Footer.Model
+    , listImages: List Image
+    , error: Maybe String
     }
 
 type alias Image = 
-    {
-        id : Int
-        , name : String
-        , description : String
-        , url : String
-        , tags : List String
-        , createdAt : String
-        , updatedAt : String
+    { id : Int
+    , name: String
+    , description: String
+    , url: String
+    , tags: List String
+    , createdAt: String
+    , updatedAt: String
     }
 
 init : ( Model, Cmd Msg )

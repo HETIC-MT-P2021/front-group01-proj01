@@ -10,11 +10,11 @@ import Header
 import Footer
 
 type alias UpdateForm = 
-    { name : String
-    , desc : String
-    , tags : String
-    , categoryName : String
-    , id : Int
+    { name: String
+    , desc: String
+    , tags: String
+    , categoryName: String
+    , id: Int
     }
 
 init : Int -> ( Model, Cmd Msg )
@@ -43,14 +43,13 @@ type alias Model =
     }
 
 type alias Image =
-    {
-        id : Int
-        , name : String
-        , description : String
-        , url : String
-        , tags : List String
-        , createdAt : String
-        , updatedAt : String
+    { id : Int
+    , name: String
+    , description: String
+    , url: String
+    , tags: List String
+    , createdAt: String
+    , updatedAt: String
     }
 
 type Msg 
