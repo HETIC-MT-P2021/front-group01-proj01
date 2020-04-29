@@ -35,16 +35,29 @@ type alias Image =
         , createdAt : String
         , updatedAt : String
     }
+form = 
+    { name = ""
+    , description = ""
+    , tags = ""
+    , category = ""
+    }
+
+type alias Form = 
+    { name : String
+    , description : String
+    , tags : String
+    , category : String
+    }
 
 type alias Model =
-    { 
-        header: Header.Model
-        , footer: Footer.Model
-        , categories: Categories.Model -- The hardcoded categories for the demo
-        , images: Images.Model -- The hardcoded images for the demo
-        , lastCategories: List Category
-        , lastImages: List Image
-        , error: Maybe String
+    { header: Header.Model
+    , footer: Footer.Model
+    , categories: Categories.Model -- The hardcoded categories for the demo
+    , images: Images.Model -- The hardcoded images for the demo
+    , lastCategories: List Category
+    , lastImages: List Image
+    , error: Maybe String
+    , imageForm: Form
     }
 
 init : ( Model, Cmd Msg )
@@ -56,6 +69,7 @@ init =
       , lastCategories = []
       , lastImages = []
       , error = Nothing
+      , imageForm = form
       }, getLastCategories )
 
 type Msg 
@@ -67,6 +81,10 @@ type Msg
     | GotCategories (Result Http.Error (List Category))
     | GetLastImages
     | GotImages (Result Http.Error (List Image))
+    | Name String
+    | Description String
+    | Tags String
+    | CategoryField String
 
 getLastCategories : Cmd Msg
 getLastCategories = 
@@ -117,6 +135,38 @@ update msg model =
 
     ImagesMsg imagesMsg ->
         ( { model | images = Images.update imagesMsg model.images }, Cmd.none )
+    
+    Name name ->
+        let
+            oldForm = model.imageForm
+            newForm = 
+                { oldForm | name = name}
+        in
+        ({ model | imageForm = newForm }, Cmd.none)
+
+    Description desc ->
+      let
+            oldForm = model.imageForm
+            newForm = 
+                { oldForm | description = desc}
+        in
+        ({ model | imageForm = newForm }, Cmd.none)
+     
+    Tags tags ->
+      let
+            oldForm = model.imageForm
+            newForm = 
+                { oldForm | tags = tags}
+        in
+        ({ model | imageForm = newForm }, Cmd.none)
+      
+    CategoryField category ->
+      let
+            oldForm = model.imageForm
+            newForm = 
+                { oldForm | category = category}
+        in
+        ({ model | imageForm = newForm }, Cmd.none)
 
     GetLastCategories ->
         (model, getLastCategories)
@@ -182,9 +232,35 @@ view model =
             , h2 [] [text "Exemple d'affichage d'images"]
             , Html.map ImagesMsg (Images.view model.images)
         ]
+        , div []
+                [text "Nouvelle Image"]
+            , span []
+                [ div []
+                    [
+                        text "Nom de l'image"
+                    ]
+                , viewInput "text" "Nom" model.imageForm.name Name
+                , div []
+                    [
+                        text "Description"
+                    ]
+                , viewInput "text" "Description" model.imageForm.description Description
+                , div []
+                    [
+                        text "Catégorie"
+                    ]
+                , viewInput "text" "Catégorie" model.imageForm.category CategoryField
+                , div []
+                    [
+                        text "Tags"
+                    ]
+                , viewInput "text" "tag1,tag2,tag3..." model.imageForm.tags Tags
+                , renderList (listTags model.imageForm.tags)
+                , button [] [ text "Poster l'image" ]
+                ]
         , Html.map FooterMsg (Footer.view model.footer)
     ]
-        
+
 renderCategory : Category -> Html msg
 renderCategory category =
     let
@@ -217,4 +293,20 @@ renderCategories categories =
                 ]
             ],
             tbody [] category
+        ]
+
+viewInput : String -> String -> String -> (String -> msg) -> Html msg
+viewInput t p v toMsg =
+  input [ type_ t, placeholder p, value v, onInput toMsg ] []
+  
+listTags : String -> (List String)
+listTags str =
+  String.split "," str
+  
+renderList : List String -> Html msg
+renderList lst =
+    div []
+        [ text "Liste de tags"
+        , ul []
+            (List.map (\l -> li [] [ text l ]) lst)
         ]
