@@ -16,24 +16,22 @@ import Listing.Categories as Categories
 import Listing.Images as Images
 
 type alias Category = 
-    {
-        id : Int
-        , name : String
-        , description : String
-        , createdAt : String
-        , updatedAt : String
+    { id: Int
+    , name: String
+    , description: String
+    , createdAt: String
+    , updatedAt: String
     }
 
 type alias Image = 
-    {
-        id : Int
-        , name : String
-        , description : String
-        , url : String
-        , category : Category
-        , tags : List String
-        , createdAt : String
-        , updatedAt : String
+    { id: Int
+    , name: String
+    , description: String
+    , url: String
+    , category: Category
+    , tags: List String
+    , createdAt: String
+    , updatedAt: String
     }
 form = 
     { name = ""
@@ -43,10 +41,10 @@ form =
     }
 
 type alias Form = 
-    { name : String
-    , description : String
-    , tags : String
-    , category : String
+    { name: String
+    , description: String
+    , tags: String
+    , category: String
     }
 
 type alias Model =

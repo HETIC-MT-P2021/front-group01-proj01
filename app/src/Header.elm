@@ -6,8 +6,8 @@ import Html.Attributes exposing (class, href, src)
 -- MODEL
 
 type alias NavItem =
-    { name : String
-    , link : String
+    { name: String
+    , link: String
     }
 
 type alias Model =

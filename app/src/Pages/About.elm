@@ -14,9 +14,8 @@ init =
       }, Cmd.none )
 
 type alias Model =
-    { 
-        header: Header.Model
-        , footer: Footer.Model
+    { header: Header.Model
+    , footer: Footer.Model
     }
 
 type Msg 
@@ -36,15 +35,12 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [] 
-    [
-        map HeaderMsg (Header.view model.header)
-        , div[class "content"]
-        [
-            div []
-                [ 
-                    h1 [] [ text "Page à propos" ]
-                    ,p [] [ text "Ceci est projet d'école, nous permettant de découvrir la programmation fonctionnelle grâce au langage ELM"] 
-                ]
+    [ map HeaderMsg (Header.view model.header)
+    , div[class "content"]
+        [ div []
+            [ h1 [] [ text "Page à propos" ]
+            ,p [] [ text "Ceci est projet d'école, nous permettant de découvrir la programmation fonctionnelle grâce au langage ELM" ] 
+            ]
         ]
-        , map FooterMsg (Footer.view model.footer)
+    , map FooterMsg (Footer.view model.footer)
     ]

@@ -6,8 +6,8 @@ import Html.Attributes exposing (class, href)
 -- MODEL
 
 type alias Author = 
-    { name : String
-    , github : String
+    { name: String
+    , github: String
     }
 
 type alias Model = { authors : List Author}

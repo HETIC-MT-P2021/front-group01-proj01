@@ -10,23 +10,21 @@ import Header
 import Footer
 
 type alias Model =
-    { 
-        header: Header.Model
-        , footer: Footer.Model
-        , listCategory: List Category
-        , error: Maybe String
-        , createForm : CreateForm
-        , updateForm : UpdateForm
-        , deleteForm : DeleteForm
+    { header: Header.Model
+    , footer: Footer.Model
+    , listCategory: List Category
+    , error: Maybe String
+    , createForm: CreateForm
+    , updateForm: UpdateForm
+    , deleteForm: DeleteForm
     }
 
 type alias Category = 
-    {
-        id : Int
-        , name : String
-        , description : String
-        , createdAt : String
-        , updatedAt : String
+    { id: Int
+    , name: String
+    , description: String
+    , createdAt: String
+    , updatedAt: String
     }
 
 createForm = 
@@ -43,14 +41,14 @@ updateForm =
 deleteForm = ""
 
 type alias CreateForm = 
-    { name : String
-    , description : String
+    { name: String
+    , description: String
     }
 
 type alias UpdateForm = 
-    { categoryName : String
-    , newName : String
-    , newDesc : String
+    { categoryName: String
+    , newName: String
+    , newDesc: String
     }
 
 type alias DeleteForm = String
