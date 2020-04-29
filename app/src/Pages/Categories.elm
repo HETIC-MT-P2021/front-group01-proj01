@@ -37,7 +37,7 @@ init =
 type Msg 
     = HeaderMsg Header.Msg
     | FooterMsg Footer.Msg
-    | SendHttpRequest
+    | GetAllCategories
     | GotItems (Result Http.Error (List Category))
 
 getCategories : Cmd Msg
@@ -65,7 +65,7 @@ update msg model =
     FooterMsg footerMsg ->
       ( { model | footer = Footer.update footerMsg model.footer }, Cmd.none )
 
-    SendHttpRequest ->
+    GetAllCategories ->
         (model, getCategories)
 
     GotItems (Ok categories) ->
@@ -141,8 +141,8 @@ view model =
                         [
                             renderCategories model.listCategory
                         ]
-                        ,button [ onClick SendHttpRequest ]
-                            [ text "Get data from server" ]
+                        ,button [ onClick GetAllCategories ]
+                            [ text "Actualiser les catégories" ]
                     ]
             ]
         , map FooterMsg (Footer.view model.footer)

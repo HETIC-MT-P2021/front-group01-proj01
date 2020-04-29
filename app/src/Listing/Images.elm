@@ -1,6 +1,8 @@
+-- This file is only meant to display hardcoded images on the home page
+
 module Listing.Images exposing (..)
 
-import Html exposing (Html, map, div, p, img, a, text)
+import Html exposing (Html, map, div, p, img, a, text, span)
 import Html.Attributes exposing (class, href, src, width, height)
 import Html.Events exposing (..)
 
@@ -13,6 +15,7 @@ type alias Image =
         createdAt : String,
         updatedAt : String,
         url : String,
+        tags : List String,
         categoryId : Maybe Int,
         categoryData : Maybe Category
     }
@@ -38,6 +41,7 @@ init =
             createdAt = "2020-05-27T16:43:58.0149453Z",
             updatedAt = "2020-05-27T16:43:58.0149453Z",
             url = "https://picsum.photos/200",
+            tags = ["Animal", "Plumes"],
             categoryId = Just 1,
             categoryData = Nothing
         },
@@ -49,6 +53,7 @@ init =
             createdAt = "2020-06-27T16:43:58.0149453Z",
             updatedAt = "2020-06-27T16:43:58.0149453Z",
             url = "https://picsum.photos/300",
+            tags = ["Animal", "Plumes"],
             categoryId = Just 2,
             categoryData = Nothing
         },
@@ -60,6 +65,7 @@ init =
             createdAt = "2020-06-27T16:43:58.0149453Z",
             updatedAt = "2020-06-27T16:43:58.0149453Z",
             url = "https://picsum.photos/250",
+            tags = ["Animal", "Plumes"],
             categoryId = Just 2,
             categoryData = Nothing
         },
@@ -71,6 +77,7 @@ init =
             createdAt = "2020-06-27T16:43:58.0149453Z",
             updatedAt = "2020-06-27T16:43:58.0149453Z",
             url = "https://picsum.photos/600",
+            tags = ["Animal", "Plumes"],
             categoryId = Just 2,
             categoryData = Nothing
         },
@@ -82,10 +89,32 @@ init =
             createdAt = "2020-06-27T16:43:58.0149453Z",
             updatedAt = "2020-06-27T16:43:58.0149453Z",
             url = "https://picsum.photos/1500",
+            tags = ["Animal", "Plumes"],
             categoryId = Just 2,
             categoryData = Nothing
         }]
     }
+
+
+renderTags : List String -> Html msg
+renderTags tags =
+    let 
+        tag =
+            List.map renderTag tags
+    in
+        div [class "image-tag-container"] tag
+
+renderTag : String -> Html msg
+renderTag tag =
+    span[class "image-tag"] [text tag]
+
+renderImages : List Image -> Html msg
+renderImages images =
+    let 
+        image =
+            List.map renderImage images
+    in
+        div [class "image-listing"] image
 
 renderImage : Image -> Html msg
 renderImage image =
@@ -101,17 +130,10 @@ renderImage image =
                     p [class "image-name"] [text image.name]
                     , p [] [text image.description]
                     , p [] [text image.updatedAt]
+                    , renderTags image.tags
                 ]
             ]
         ]
-
-renderImages : List Image -> Html msg
-renderImages images =
-    let 
-        image =
-            List.map renderImage images
-    in
-        div [class "image-listing"] image
 
 type Msg 
     =  SetImages (List Image)

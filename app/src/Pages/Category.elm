@@ -9,7 +9,7 @@ import Json.Decode as Decode exposing (Decoder)
 import Header
 import Footer
 
-init : Int -> ( Model, Cmd Msg )
+init : Int -> ( Model, Model -> Cmd Msg )
 init id =
     ( { header = Header.init
       , footer = Footer.init
@@ -17,7 +17,7 @@ init id =
       , categoryData = Nothing
       , images = []
       , error = Nothing
-      }, Cmd.none )
+      }, getCategory )
 
 type alias Model =
     { 
@@ -49,7 +49,7 @@ type alias Category =
 type Msg 
     = HeaderMsg Header.Msg
     | FooterMsg Footer.Msg
-    | SendHttpRequest
+    | GetTheCategory
     | GotItem (Result Http.Error (Category))
 
 getCategory : Model -> Cmd Msg
@@ -80,7 +80,7 @@ update msg model =
     FooterMsg footerMsg ->
       ( { model | footer = Footer.update footerMsg model.footer }, Cmd.none )
 
-    SendHttpRequest ->
+    GetTheCategory ->
         (model, getCategory model)
 
     GotItem (Ok category) ->

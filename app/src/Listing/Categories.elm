@@ -1,3 +1,5 @@
+-- This file is only meant to display hardcoded Categories on the home page
+
 module Listing.Categories exposing (Category, Msg(..), Model, init, update, view)
 
 import Html exposing (Html, map, text, div, table, thead, tbody, td, tr, th, a)
