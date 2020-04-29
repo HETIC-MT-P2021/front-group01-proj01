@@ -1,7 +1,7 @@
 module Pages.Categories exposing (view, Msg, update, init, Model)
 
-import Html exposing (Html, h1, map, text, div, p, table, thead, tbody, tr, td, th, a, button)
-import Html.Attributes exposing (class, href, src)
+import Html exposing (Html, h1, map, text, div, p, table, thead, tbody, tr, td, th, a, button, span, input)
+import Html.Attributes exposing (class, href, src, type_, placeholder, value)
 import Html.Events exposing (..)
 import Http exposing (Error(..))
 import Json.Decode as Decode exposing (Decoder)
@@ -15,6 +15,9 @@ type alias Model =
         , footer: Footer.Model
         , listCategory: List Category
         , error: Maybe String
+        , createForm : CreateForm
+        , updateForm : UpdateForm
+        , deleteForm : DeleteForm
     }
 
 type alias Category = 
@@ -26,12 +29,41 @@ type alias Category =
         , updatedAt : String
     }
 
+createForm = 
+    { name = ""
+    , description = ""
+    }
+
+updateForm = 
+    { categoryName = ""
+    , newName = ""
+    , newDesc = ""
+    }
+
+deleteForm = ""
+
+type alias CreateForm = 
+    { name : String
+    , description : String
+    }
+
+type alias UpdateForm = 
+    { categoryName : String
+    , newName : String
+    , newDesc : String
+    }
+
+type alias DeleteForm = String
+
 init : ( Model, Cmd Msg )
 init =
     ( { header = Header.init
       , footer = Footer.init
       , listCategory = []
       , error = Nothing
+      , createForm = createForm
+      , updateForm = updateForm
+      , deleteForm = deleteForm
       }, getCategories )
 
 type Msg 
@@ -39,6 +71,12 @@ type Msg
     | FooterMsg Footer.Msg
     | GetAllCategories
     | GotItems (Result Http.Error (List Category))
+    | Name String
+    | Description String
+    | UpdateCategory String
+    | NewName String
+    | NewDescription String
+    | DeleteCategory String
 
 getCategories : Cmd Msg
 getCategories = 
@@ -73,6 +111,49 @@ update msg model =
 
     GotItems (Err err) ->
         ( { model | error = Just <| errorToString err, listCategory = [] }, Cmd.none )
+
+    Name name ->
+        let
+            oldForm = model.createForm
+            newForm = 
+                { oldForm | name = name }
+        in
+        ( { model | createForm = newForm }, Cmd.none )
+
+    Description desc ->
+      let
+            oldForm = model.createForm
+            newForm = 
+                { oldForm | description = desc }
+        in
+        ( { model | createForm = newForm }, Cmd.none )
+
+    UpdateCategory category ->
+        let
+            oldForm = model.updateForm
+            newForm = 
+                { oldForm | categoryName = category }
+        in
+        ( { model | updateForm = newForm }, Cmd.none )
+
+    NewName name ->
+        let
+            oldForm = model.updateForm
+            newForm = 
+                { oldForm | newName = name }
+        in
+        ( { model | updateForm = newForm }, Cmd.none )
+
+    NewDescription desc -> 
+        let
+            oldForm = model.updateForm
+            newForm = 
+                { oldForm | newDesc = desc }
+        in
+        ( { model | updateForm = newForm }, Cmd.none )
+
+    DeleteCategory name ->
+        ( { model | deleteForm = name }, Cmd.none)
 
 errorToString : Http.Error -> String
 errorToString error =
@@ -126,7 +207,6 @@ renderCategories categories =
             tbody [] category
         ]
 
-
 view : Model -> Html Msg
 view model =
     div[] [
@@ -145,6 +225,34 @@ view model =
                             [ text "Actualiser les catégories" ]
                     ]
             ]
+            , div [] [text "Nouvelle Catégorie"]
+            , span []
+                [ div [] [ text "Nom de la catégorie" ]
+                , viewInput "text" "Nom" model.createForm.name Name
+                , div [] [ text "Description" ]
+                , viewInput "text" "Description" model.createForm.description Description
+                , button [] [ text "Poster la catégorie" ]
+                ]
+            , div [] [text "Modifier une catégorie"]
+            , span []
+                [ div [] [ text "Nom de la catégorie" ]
+                , viewInput "text" "Nom" model.createForm.name Name
+                , div [] [ text "Nouveau nom" ]
+                , viewInput "text" "Description" model.createForm.description Description
+                , div [] [ text "Nouvelle description" ]
+                , viewInput "text" "Description" model.createForm.description Description
+                , button [] [ text "Modifier la catégorie" ]
+                ]
+            , div [] [text "Supprimer une catégorie"]
+            , span []
+                [ div [] [ text "Nom de la catégorie" ]
+                , viewInput "text" "Nom" model.createForm.name Name
+                , button [] [ text "Supprimer la catégorie" ]
+                ]
         , map FooterMsg (Footer.view model.footer)
     ]
+
+viewInput : String -> String -> String -> (String -> msg) -> Html msg
+viewInput t p v toMsg =
+  input [ type_ t, placeholder p, value v, onInput toMsg ] []
     
