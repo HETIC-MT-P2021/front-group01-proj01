@@ -8,7 +8,6 @@ import Json.Decode as Decode exposing (Decoder)
 
 import Header
 import Footer
-import Listing.Categories as Categories
 import Listing.Images as Images
 
 type alias Category = 
@@ -24,7 +23,6 @@ type alias Model =
     { 
         header: Header.Model
         , footer: Footer.Model
-        , categories: Categories.Model
         , images: Images.Model
         , listCategory: List Category
         , error: Maybe String
@@ -34,7 +32,6 @@ init : ( Model, Cmd Msg )
 init =
     ( { header = Header.init
       , footer = Footer.init
-      , categories = Categories.init
       , images = Images.init
       , listCategory = []
       , error = Nothing
@@ -43,7 +40,6 @@ init =
 type Msg 
     = HeaderMsg Header.Msg
     | FooterMsg Footer.Msg
-    | CategoriesMsg Categories.Msg
     | ImagesMsg Images.Msg
     | SendHttpRequest
     | GotItems (Result Http.Error (List Category))
@@ -72,9 +68,6 @@ update msg model =
 
     FooterMsg footerMsg ->
         ( { model | footer = Footer.update footerMsg model.footer }, Cmd.none )
-    
-    CategoriesMsg categoriesMsg ->
-        ( { model | categories = Categories.update categoriesMsg model.categories }, Cmd.none )
 
     ImagesMsg imagesMsg ->
         ( { model | images = Images.update imagesMsg model.images }, Cmd.none )
@@ -109,37 +102,29 @@ errorToString error =
 
 view : Model -> Html Msg
 view model =
-    let
-        setCategories = CategoriesMsg (Categories.SetCategories [{ id = 4,
-            name = "Mange",
-            description = "Des mangas",
-            createdAt = "2020-05-27T16:43:58.0149453Z",
-            updatedAt = "2020-05-27T16:43:58.0149453Z"
-            }])
-    in
-        div[]
+    div[]
+    [
+        Html.map HeaderMsg (Header.view model.header)
+        , div[class "content"]
         [
-            Html.map HeaderMsg (Header.view model.header)
-            , div[class "content"]
-            [
-                
-                div []
-                    [ 
-                        h1 [] [ text "Page home" ] 
-                    ]
-                , h2 [] [text "Dernières catégories ajoutées"]
-                , Html.map ImagesMsg (Images.view model.images)
-                , div [class "categories"]
-                    [
-                        renderCategories model.listCategory
-                    ]
-                , div []
-                [ button [ onClick SendHttpRequest ]
-                    [ text "Get data from server" ]
+            
+            div []
+                [ 
+                    h1 [] [ text "Page home" ] 
                 ]
+            , h2 [] [text "Dernières catégories ajoutées"]
+            , div [class "categories"]
+                [
+                    renderCategories model.listCategory
+                ]
+            , div []
+            [ button [ onClick SendHttpRequest ]
+                [ text "Get data from server" ]
             ]
-            , Html.map FooterMsg (Footer.view model.footer)
+            , Html.map ImagesMsg (Images.view model.images)
         ]
+        , Html.map FooterMsg (Footer.view model.footer)
+    ]
         
 renderCategory : Category -> Html msg
 renderCategory category =

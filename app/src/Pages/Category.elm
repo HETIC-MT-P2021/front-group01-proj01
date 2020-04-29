@@ -3,6 +3,8 @@ module Pages.Category exposing (view, Msg, update, init, Model)
 import Html exposing (Html, h1, map, text, div, span)
 import Html.Attributes exposing (class)
 import Html.Events exposing (..)
+import Http exposing (Error(..))
+import Json.Decode as Decode exposing (Decoder)
 
 import Header
 import Footer
@@ -14,6 +16,7 @@ init id =
       , categoryId = id
       , categoryData = Nothing
       , images = []
+      , error = Nothing
       }, Cmd.none )
 
 type alias Model =
@@ -23,6 +26,7 @@ type alias Model =
         , categoryId: Int
         , categoryData: Maybe Category
         , images: List Image
+        , error: Maybe String
     }
 
 type alias Image = 
@@ -38,11 +42,34 @@ type alias Category =
     {
         name: String
         , description: String
+        , createdAt: String
+        , updatedAt: String
     }
 
 type Msg 
     = HeaderMsg Header.Msg
     | FooterMsg Footer.Msg
+    | SendHttpRequest
+    | GotItem (Result Http.Error (Category))
+
+getCategory : Model -> Cmd Msg
+getCategory model = 
+    let
+        urlToCall = "http://localhost:8080/categories/" ++ String.fromInt model.categoryId
+    in  
+        Http.get
+        { url = urlToCall
+        , expect = Http.expectJson GotItem decodeCategory
+        }
+
+decodeCategory : Decoder Category
+decodeCategory =
+    Decode.map4 Category
+        (Decode.field "name" Decode.string)
+        (Decode.field "description" Decode.string)
+        (Decode.field "createdAt" Decode.string)
+        (Decode.field "updatedAt" Decode.string)
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -52,6 +79,33 @@ update msg model =
 
     FooterMsg footerMsg ->
       ( { model | footer = Footer.update footerMsg model.footer }, Cmd.none )
+
+    SendHttpRequest ->
+        (model, getCategory model)
+
+    GotItem (Ok category) ->
+        ( { model | error = Nothing, categoryData = Just category }, Cmd.none )
+
+    GotItem (Err err) ->
+        ( { model | error = Just <| errorToString err, categoryData = Nothing }, Cmd.none )
+
+errorToString : Http.Error -> String
+errorToString error =
+    case error of
+        BadUrl url ->
+            "Bad url: " ++ url
+
+        Timeout ->
+            "Request timed out."
+
+        NetworkError ->
+            "Network error. Are you online?"
+
+        BadStatus status_code ->
+            "HTTP error " ++ String.fromInt status_code
+
+        BadBody body ->
+            "Unable to parse response body: " ++ body
 
 
 view : Model -> Html Msg
