@@ -7,9 +7,8 @@ import Header
 import Footer
 
 type alias Model =
-    { 
-        header: Header.Model
-        , footer: Footer.Model
+    { header: Header.Model
+    , footer: Footer.Model
     }
 
 init : ( Model, Cmd Msg )

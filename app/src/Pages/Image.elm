@@ -1,6 +1,6 @@
 module Pages.Image exposing (view, Msg, update, init, Model)
 
-import Html exposing (Html, h1, map, text, div, span, button, input, ul, li)
+import Html exposing (Html, h1, map, text, div, span, button, input, ul, li, p)
 import Html.Attributes exposing (class, type_, placeholder, value)
 import Html.Events exposing (..)
 import Http exposing (Error(..))
@@ -10,11 +10,11 @@ import Header
 import Footer
 
 type alias UpdateForm = 
-    { name : String
-    , desc : String
-    , tags : String
-    , categoryName : String
-    , id : Int
+    { name: String
+    , desc: String
+    , tags: String
+    , categoryName: String
+    , id: Int
     }
 
 init : Int -> ( Model, Cmd Msg )
@@ -43,14 +43,13 @@ type alias Model =
     }
 
 type alias Image =
-    {
-        id : Int
-        , name : String
-        , description : String
-        , url : String
-        , tags : List String
-        , createdAt : String
-        , updatedAt : String
+    { id : Int
+    , name: String
+    , description: String
+    , url: String
+    , tags: List String
+    , createdAt: String
+    , updatedAt: String
     }
 
 type Msg 
@@ -165,9 +164,10 @@ view model =
                     span [] [text (String.fromInt model.imageId)]
                 ]
         ]
-        , div []
-                [text "Modifier l'image"]
-            , span []
+        , div [class "form"]
+            [
+                p [] [text "Modifier l'image"]
+                , div [class "form-content"]
                 [ div []
                     [ text "Nom de l'image" ]
                 , viewInput "text" "Nom" model.updateImageForm.name UpdateName
@@ -178,9 +178,10 @@ view model =
                 , div [] [ text "Changer les tags" ]
                 , viewInput "text" "tag1,tag2,tag3..." model.updateImageForm.tags UpdateTags
                 , renderList (listTags model.updateImageForm.tags)
-                , button [] [ text "Modifier l'image" ]
+                , button [class "orange-btn"] [ text "Modifier l'image" ]
                 ]
-        , div [] [ button [] [ text "Supprimer l'image" ] ]
+            ]
+        , div [class "align-center"] [ button [class "orange-btn"] [ text "Supprimer l'image" ] ]
         , map FooterMsg (Footer.view model.footer)
     ]
 

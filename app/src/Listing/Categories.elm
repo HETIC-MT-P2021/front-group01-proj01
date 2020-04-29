@@ -1,23 +1,22 @@
--- This file is only meant to display hardcoded Categories on the home page
-
 module Listing.Categories exposing (Category, Msg(..), Model, init, update, view)
 
 import Html exposing (Html, map, text, div, table, thead, tbody, td, tr, th, a)
 import Html.Attributes exposing (class, href)
 import Html.Events exposing (..)
 
+-- This file is only meant to display hardcoded Categories on the home page
+
 type alias Category = 
-    {
-        id : Int
-        , name : String
-        , description : String
-        , createdAt : String
-        , updatedAt : String
+    { id: Int
+    , name: String
+    , description: String
+    , createdAt: String
+    , updatedAt: String
     }
 
 type alias Model = 
     {
-       listCategories : List Category
+       listCategories: List Category
     }
 
 init : Model
@@ -90,7 +89,4 @@ update msg model =
 
 view : Model -> Html msg
 view model =
-    div [class "categories"]
-    [
-        renderCategories model.listCategories
-    ]
+    div [class "categories"] [renderCategories model.listCategories]

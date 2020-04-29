@@ -4,6 +4,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http exposing (Error(..))
+import File exposing (File)
 import Json.Decode as Decode exposing (Decoder)
 
 import Header
@@ -16,24 +17,22 @@ import Listing.Categories as Categories
 import Listing.Images as Images
 
 type alias Category = 
-    {
-        id : Int
-        , name : String
-        , description : String
-        , createdAt : String
-        , updatedAt : String
+    { id: Int
+    , name: String
+    , description: String
+    , createdAt: String
+    , updatedAt: String
     }
 
 type alias Image = 
-    {
-        id : Int
-        , name : String
-        , description : String
-        , url : String
-        , category : Category
-        , tags : List String
-        , createdAt : String
-        , updatedAt : String
+    { id: Int
+    , name: String
+    , description: String
+    , url: String
+    , category: Category
+    , tags: List String
+    , createdAt: String
+    , updatedAt: String
     }
 form = 
     { name = ""
@@ -43,10 +42,10 @@ form =
     }
 
 type alias Form = 
-    { name : String
-    , description : String
-    , tags : String
-    , category : String
+    { name: String
+    , description: String
+    , tags: String
+    , category: String
     }
 
 type alias Model =
@@ -58,6 +57,7 @@ type alias Model =
     , lastImages: List Image
     , error: Maybe String
     , imageForm: Form
+    , files: List File
     }
 
 init : ( Model, Cmd Msg )
@@ -70,6 +70,7 @@ init =
       , lastImages = []
       , error = Nothing
       , imageForm = form
+      , files = []
       }, getLastCategories )
 
 type Msg 
@@ -85,6 +86,7 @@ type Msg
     | Description String
     | Tags String
     | CategoryField String
+    | GotFiles (List File)
 
 getLastCategories : Cmd Msg
 getLastCategories = 
@@ -120,6 +122,10 @@ decodeImage =
         (Decode.field "tags" (Decode.list Decode.string))
         (Decode.field "createdAt" Decode.string)
         (Decode.field "updatedAt" Decode.string)
+
+filesDecoder : Decode.Decoder (List File)
+filesDecoder =
+  Decode.at ["target","files"] (Decode.list File.decoder)
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -167,6 +173,9 @@ update msg model =
                 { oldForm | category = category}
         in
         ({ model | imageForm = newForm }, Cmd.none)
+
+    GotFiles files ->
+        ({ model | files = files}, Cmd.none )
 
     GetLastCategories ->
         (model, getLastCategories)
@@ -224,7 +233,7 @@ view model =
                     renderCategories model.lastCategories
                 ]
             , div []
-            [ button [ onClick GetLastCategories ]
+            [ button [ class "orange-btn", onClick GetLastCategories ]
                 [ text "Actualiser les catégories" ]
             ]
             , h2 [] [text "Exemple d'affichage de catégories"]
@@ -232,10 +241,20 @@ view model =
             , h2 [] [text "Exemple d'affichage d'images"]
             , Html.map ImagesMsg (Images.view model.images)
         ]
-        , div []
-                [text "Nouvelle Image"]
-            , span []
-                [ div []
+        , div [class "form"]
+        [
+            p [] [text "Nouvelle Image"]
+            , div [class "form-content"]
+            [
+                div[]
+                [ input
+                    [ type_ "file"
+                    , multiple True
+                    , on "change" (Decode.map GotFiles filesDecoder)
+                    ]
+                    []
+                ],
+                div []
                     [
                         text "Nom de l'image"
                     ]
@@ -256,8 +275,9 @@ view model =
                     ]
                 , viewInput "text" "tag1,tag2,tag3..." model.imageForm.tags Tags
                 , renderList (listTags model.imageForm.tags)
-                , button [] [ text "Poster l'image" ]
+                , button [class "orange-btn"] [ text "Poster l'image" ]
                 ]
+        ]
         , Html.map FooterMsg (Footer.view model.footer)
     ]
 
